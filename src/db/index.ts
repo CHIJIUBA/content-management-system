@@ -22,7 +22,7 @@ class DB {
       console.log('Connecting to SQLite database...');
 
       if (process.env.NODE_ENV === 'development') {
-        await this.sequelize.sync(); // Or { alter: true } / { force: true }
+        // await this.sequelize.sync(); // Or { alter: true } / { force: true }
         // await this.seqelize.sync({});
         // this.seqelize.sync({ alter: true });
         // this.seqelize.sync({ force: true });
