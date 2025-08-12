@@ -1,45 +1,43 @@
 import { Options, Sequelize } from 'sequelize';
 import { init as initModels } from './models';
-import { serverConfigs } from '../../src/configs';
+import path from 'path';
 
 class DB {
-  public seqelize: Sequelize;
+  public sequelize: Sequelize;
   public options: Options;
 
   constructor() {
     this.options = {
-      dialect: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      logging: serverConfigs.NODE_ENV === 'development' ? console.log : false
+      dialect: 'sqlite',
+      storage: path.join(process.cwd(), 'database.sqlite'), // Root directory
+      logging: process.env.NODE_ENV === 'development' ? console.log : false
     };
   }
 
   public async connectDB() {
     try {
-      this.seqelize = new Sequelize('postgres', 'postgres', 'saveek123', this.options);
-      initModels(this.seqelize);
+      this.sequelize = new Sequelize(this.options);
+      initModels(this.sequelize);
 
-      console.log('Connecting to the database...');
+      console.log('Connecting to SQLite database...');
 
-      if (serverConfigs.NODE_ENV === 'development') {
-        // await this.seqelize.sync({});
-        // this.seqelize.sync({ alter: true });
-        // this.seqelize.sync({ force: true });
+      if (process.env.NODE_ENV === 'development') {
+        await this.sequelize.sync(); // Or { alter: true } / { force: true }
       }
 
-      console.log('Connected to the database');
-      return this.seqelize;
+      console.log('Connected to SQLite database');
+      return this.sequelize;
     } catch (error) {
-      console.log(`Error connecting to the database:${error}`);
+      console.log(`Error connecting to the database: ${error}`);
     }
   }
 
-  public closeDB() {
+  public async closeDB() {
     try {
-      this.seqelize.close();
+      await this.sequelize.close();
+      console.log('Database connection closed');
     } catch (error) {
-      console.log(`Error closing the database:${error}`);
+      console.log(`Error closing the database: ${error}`);
     }
   }
 }
