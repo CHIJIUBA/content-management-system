@@ -18,7 +18,7 @@ class User
   declare lastName: string;
   declare email: string;
   declare password: string;
-  declare role: CreationOptional<string>;
+  // declare role: CreationOptional<string>;
   declare isVerified: CreationOptional<boolean>;
 
   public async comparePassword(password: string): Promise<boolean> {
@@ -56,12 +56,12 @@ export const init = (sequelize: Sequelize) => {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: false
-      },
-      role: {
-        type: DataTypes.ENUM('user', 'admin', 'guest'),
-        defaultValue: 'user',
-        allowNull: false
       }
+      // role: {
+      //   type: DataTypes.ENUM('user', 'admin', 'guest'),
+      //   defaultValue: 'user',
+      //   allowNull: false
+      // }
     },
     {
       sequelize,
