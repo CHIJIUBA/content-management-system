@@ -3,7 +3,7 @@ import { Sequelize } from 'sequelize';
 import { Server } from 'http';
 import cors, { CorsOptions } from 'cors';
 import routes from './routes';
-import db from './db/index4';
+import db from './db/index';
 import { createClient } from 'redis';
 import morgan from 'morgan';
 import serverConfigs from './configs/server.configs';
