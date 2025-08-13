@@ -68,16 +68,16 @@ class PostController {
     }
   }
 
-  public async uploadFile(req: Request, res: Response, next: NextFunction) {
-    try {
-      // console.log('req body name', req.body.name);
-      console.log('req file', req.file);
-      res.json({ message: 'Successfully uploaded files' });
-    } catch (error) {
-      console.error(`Error retrieving post: ${error}`);
-      res.status(404).json({ error: 'No post with this user id found' });
-    }
-  }
+  // public async uploadFile(req: Request, res: Response, next: NextFunction) {
+  //   try {
+  //     // console.log('req body name', req.body.name);
+  //     console.log('req file', req.file);
+  //     res.json({ message: 'Successfully uploaded files' });
+  //   } catch (error) {
+  //     console.error(`Error retrieving post: ${error}`);
+  //     res.status(404).json({ error: 'No post with this user id found' });
+  //   }
+  // }
 
   /**
    * Update a post by ID
