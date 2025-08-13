@@ -11,3 +11,4 @@ interface UserAttributeI {
 }
 
 export default UserAttributeI;
+// I added a new comment here to indicate that this is the end of the file.
