@@ -29,10 +29,11 @@
     "target": "es6",
     "moduleResolution": "node",
     "sourceMap": true,
+    "rootDir": "src",
     "outDir": "dist",
     "typeRoots": ["./node_modules/@types", "./@types"],
     "resolveJsonModule": true
   },
-  "exclude": ["node_modules", "dist/**/*"],
+  "exclude": ["node_modules", "dist/**/*", "**/*.test.ts", "**/*.spec.ts", "src/tests"],
   "lib": ["es2015"]
 }
