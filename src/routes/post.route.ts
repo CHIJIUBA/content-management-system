@@ -1,7 +1,6 @@
 import express from 'express';
 import PostController from '../controllers/post.controller';
 import systemMiddleware from '../middleware/system.middleware';
-import { authorizationMiddleware } from '../middleware';
 import postsValidator from '../utils/posts.validator';
 import fileuploadsMiddleware from '../middleware/fileuploads.middleware';
 
@@ -27,11 +26,6 @@ postRouter.patch(
   systemMiddleware.validateRequestBody(postsValidator.updatePost),
   PostController.updatePost
 );
-postRouter.get(
-  '/:id',
-  systemMiddleware.formatRequestParamId('id'),
-  authorizationMiddleware.authorizeViewPost,
-  PostController.getPost
-);
+postRouter.get('/:id', systemMiddleware.formatRequestParamId('id'), PostController.getPost);
 postRouter.delete('/:id', systemMiddleware.formatRequestParamId('id'), PostController.deletePost);
 export default postRouter;
