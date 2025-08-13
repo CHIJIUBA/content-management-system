@@ -45,8 +45,7 @@ class AuthController {
         password,
         firstName,
         lastName,
-        isVerified,
-        role
+        isVerified
       });
       if (data.message) {
         res.status(409).json({

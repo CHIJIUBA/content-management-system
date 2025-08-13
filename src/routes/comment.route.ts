@@ -1,6 +1,5 @@
 import express from 'express';
 import systemMiddleware from '../middleware/system.middleware';
-import { authorizationMiddleware } from '../middleware';
 import commentController from '../controllers/comment.controller';
 import postsValidator from '../utils/posts.validator';
 

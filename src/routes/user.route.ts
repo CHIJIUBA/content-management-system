@@ -1,7 +1,6 @@
 import express from 'express';
 import UserController from '../controllers/users.controller';
 import systemMiddleware from '../middleware/system.middleware';
-import postsValidator from '../utils/posts.validator';
 
 const userRouter = express.Router();
 
