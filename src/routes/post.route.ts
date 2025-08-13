@@ -14,11 +14,11 @@ postRouter.post(
 
 postRouter.post('/hello', PostController.sayHello);
 
-postRouter.post(
-  '/file',
-  fileuploadsMiddleware.singleUpload('singleFile'), // middleware to handle file upload
-  PostController.uploadFile
-);
+// postRouter.post(
+//   '/file',
+//   fileuploadsMiddleware.singleUpload('singleFile'), // middleware to handle file upload
+//   PostController.uploadFile
+// );
 
 postRouter.patch(
   '/:id',
