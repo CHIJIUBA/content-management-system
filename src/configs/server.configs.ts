@@ -4,7 +4,7 @@ import debug from 'debug';
 config();
 
 class ServerConfig {
-  public PORT = process.env.PORT ? Number(process.env.PORT) : 3009;
+  public PORT = process.env.PORT ? Number(process.env.PORT) : 8080;
   public NODE_ENV = process.env.NODE_ENV || 'development';
   public BASE_URL = process.env.BASE_URL;
   public ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS;

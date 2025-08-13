@@ -18,7 +18,7 @@ class App {
   private readonly corsOptions: CorsOptions;
   constructor() {
     this.app = express();
-    this.port = serverConfigs.PORT || 3000;
+    this.port = serverConfigs.PORT;
     this.corsOptions = {
       origin: '*',
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE'
