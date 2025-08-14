@@ -17,7 +17,7 @@ class Routes {
   routes() {
     this.router.get('/', (req: Request, res: Response) => {
       res.status(200).json({
-        message: 'Welcome to the user guide clone',
+        message: 'Welcome to my Content Management System API',
         data: {
           environment: serverConfigs.NODE_ENV,
           version: '1.0.0'
