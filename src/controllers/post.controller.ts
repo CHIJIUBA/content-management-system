@@ -11,9 +11,13 @@ class PostController {
    * @param res - Express response object
    */
   public async addPost(req: Request, res: Response) {
-    const { title, content } = req.body;
+    const postData: Partial<Post> = {
+      title: req.body.title,
+      content: req.body.content,
+      authorId: req.user.id
+    };
     try {
-      const post = await postsService.createPost({ title, content, authorId: req.user.id });
+      const post = await postsService.createPost(postData);
       if (!post) {
         res.status(400).json({ error: 'Failed to create post' });
       }
