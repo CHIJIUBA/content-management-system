@@ -10,7 +10,8 @@ class DB {
     this.options = {
       dialect: 'sqlite',
       storage: path.join(process.cwd(), 'database.sqlite'), // Root directory
-      logging: process.env.NODE_ENV === 'development' ? console.log : false
+      // logging: process.env.NODE_ENV === 'development' ? console.log : false
+      logging: false // Disable logging for production
     };
   }
 
