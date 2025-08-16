@@ -1,6 +1,7 @@
 import { serverConfigs } from '../../configs';
 import { NextFunction, Request, Response } from 'express';
 import authService from '../../services/auth/auth.service';
+import User from '../../db/models/user.model';
 
 class AuthController {
   protected async login(req: Request, res: Response, next: NextFunction) {
@@ -37,16 +38,14 @@ class AuthController {
       const {
         body: { email, password, firstName, lastName }
       } = req;
-      const isVerified = false;
-      const role = 'user'; // default role
-      // create the user in the database
-      const data = await authService.registerUser({
+      const registerData: Partial<User> = {
         email,
         password,
         firstName,
         lastName,
-        isVerified
-      });
+        isVerified: req.body.isVerified || false // Default to false if not provided
+      };
+      const data = await authService.registerUser(registerData);
       if (data.message) {
         res.status(409).json({
           message: data.message
