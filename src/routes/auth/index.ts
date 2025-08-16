@@ -13,7 +13,7 @@ class AuthRoutes extends AuthController {
   }
 
   private routes(): void {
-    this.router.route('/google').post(this.googleLogin);
+    this.router.route('/google').get(this.googleLogin);
     this.router
       .route('/login')
       .post(systemMiddleware.validateRequestBody(authValidator.login), this.login);
