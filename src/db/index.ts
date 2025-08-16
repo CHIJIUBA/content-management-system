@@ -23,9 +23,8 @@ class DB {
 
       if (process.env.NODE_ENV === 'development') {
         // await this.sequelize.sync(); // Or { alter: true } / { force: true }
-        // await this.seqelize.sync({});
         // this.seqelize.sync({ alter: true });
-        // this.seqelize.sync({ force: true });
+        // this.sequelize.sync({ force: true });
       }
 
       console.log('Connected to SQLite database');
