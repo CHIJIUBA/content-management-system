@@ -22,6 +22,7 @@ class AuthenticationMiddleware {
       } else {
         token = authorization;
       }
+      // add
 
       if (!token) {
         throw new BadRequestError('No token provided');
