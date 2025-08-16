@@ -32,7 +32,7 @@ class AuthController {
 
   protected async googleLogin(req: Request, res: Response, next: NextFunction) {
     try {
-      res.status(501).send({
+      res.status(200).send({
         message: 'Google login not implemented yet'
       });
       // const {
