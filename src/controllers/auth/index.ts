@@ -32,24 +32,22 @@ class AuthController {
 
   protected async googleLogin(req: Request, res: Response, next: NextFunction) {
     try {
-      const {
-        body: { email, password }
-      } = req;
-
-      const userPasswordCheck = await authService.checkUserExistAndPasswordMatch(email, password);
-      if (userPasswordCheck) {
-        res.status(401).send({
-          message: userPasswordCheck
-        });
-      } else {
-        const user = await authService.getUserForLogin(email, password);
-
-        const data = await authService.login(user);
-        res.status(200).send({
-          message: 'Logged in successful',
-          data
-        });
-      }
+      // const {
+      //   body: { email, password }
+      // } = req;
+      // const userPasswordCheck = await authService.checkUserExistAndPasswordMatch(email, password);
+      // if (userPasswordCheck) {
+      //   res.status(401).send({
+      //     message: userPasswordCheck
+      //   });
+      // } else {
+      //   const user = await authService.getUserForLogin(email, password);
+      //   const data = await authService.login(user);
+      //   res.status(200).send({
+      //     message: 'Logged in successful',
+      //     data
+      //   });
+      // }
     } catch (error) {
       serverConfigs.DEBUG(`Error in authenticate create controller method:${error}`);
       next(error);
