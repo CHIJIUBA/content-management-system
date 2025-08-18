@@ -90,14 +90,14 @@ class PostController {
    */
   public async updatePost(req: Request, res: Response) {
     const { id } = req.params;
-    const { title, content, status } = req.body;
+    const postData: Partial<Post> = {
+      title: req.body?.title,
+      content: req.body?.content,
+      status: req.body?.status,
+      authorId: req.user.id
+    };
     try {
-      const result = await postsService.updatePost(parseInt(id), {
-        title,
-        content,
-        status,
-        authorId: req.user.id
-      });
+      const result = await postsService.updatePost(parseInt(id), postData);
       if (!result) {
         res.status(404).json({ error: 'Post not found or not authorized to update' });
       }
