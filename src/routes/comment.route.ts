@@ -6,8 +6,9 @@ import commentsValidator from '../utils/comments.validator';
 const commentRoute = express.Router();
 
 commentRoute.post(
-  '/',
+  '/:postId/comment',
   systemMiddleware.validateRequestBody(commentsValidator.addComment),
+  systemMiddleware.formatRequestParamId('postId'),
   commentController.addComment
 );
 commentRoute.get('/:id/:postId', commentController.getComment);
