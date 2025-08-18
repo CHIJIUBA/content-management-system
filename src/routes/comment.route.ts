@@ -19,8 +19,17 @@ commentRoute.get(
 );
 commentRoute.patch(
   '/:postId/comment/:commentId',
+  systemMiddleware.formatRequestParamId('postId'),
+  systemMiddleware.formatRequestParamId('commentId'),
   systemMiddleware.validateRequestBody(commentsValidator.updateComment),
   commentController.updateComment
+);
+
+commentRoute.delete(
+  '/:postId/comment/:commentId',
+  systemMiddleware.formatRequestParamId('postId'),
+  systemMiddleware.formatRequestParamId('commentId'),
+  commentController.deletePost
 );
 
 export default commentRoute;
