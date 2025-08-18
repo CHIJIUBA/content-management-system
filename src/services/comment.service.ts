@@ -58,18 +58,16 @@ class CommentService {
     return comment;
   }
 
-  //   public async deleteComment(id: number, userId: number, postId: number): Promise<boolean> {
-  //     // Delete the post by ID and authorId
-  //     if (!id || !userId) {
-  //       throw new NotFoundError('Post ID and Author ID are required');
-  //     }
-  //     const post = await this.getUserComment(id, userId, postId);
-  //     if (!post) {
-  //       throw new NotFoundError(`Post with ID ${id} not found`);
-  //     }
-  //     await post.destroy();
-  //     return true;
-  //   }
+  public async deleteComment(commentData: Partial<Comment>): Promise<boolean> {
+    // Delete the post by ID and authorId
+    const { id, userId, postId } = commentData;
+    const comment = await this.getUserComment(commentData);
+    if (!comment) {
+      throw new NotFoundError(`user comment with id: ${id} not found`);
+    }
+    await Comment.destroy();
+    return true;
+  }
 }
 
 export default new CommentService();
