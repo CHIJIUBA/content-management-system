@@ -16,15 +16,16 @@ class PostController {
       content: req.body.content,
       authorId: req.user.id
     };
+    console.log('postData', postData);
     try {
       const post = await postsService.createPost(postData);
       if (!post) {
         res.status(400).json({ error: 'Failed to create post' });
       }
-      res.status(201).json({
-        message: 'Post created successfully',
-        post
-      });
+      // res.status(201).json({
+      //   message: 'Post created successfully',
+      //   post
+      // });
     } catch (error) {
       console.error(`Error creating post: ${error}`);
       res.status(400).json({ error: 'Failed to create post' });
