@@ -1,0 +1,1548 @@
+{
+	"info": {
+		"_postman_id": "d455f01e-435a-4452-9cc0-083c49ee231b",
+		"name": "Chijiuba_CMS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18370696",
+		"_collection_link": "https://www.postman.com/chijiuba1234/workspace/content-management-system/collection/18370696-d455f01e-435a-4452-9cc0-083c49ee231b?action=share&source=collection_link&creator=18370696"
+	},
+	"item": [
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "addPost",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const postId = pm.response.json().post.id; // Extract the book ID from the response body\r",
+									"pm.collectionVariables.set(\"postId\", postId); // Set the book ID as a collection variable for future use\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains the correct post details\", function () {\r",
+									"    const responsePost = pm.response.json().post;\r",
+									"    pm.expect(responsePost).have.property('title');\r",
+									"    pm.expect(responsePost).have.property('content');\r",
+									"    pm.expect(responsePost).have.property('slug');\r",
+									"    pm.expect(responsePost).have.property('status');\r",
+									"    pm.expect(responsePost).have.property('authorId');\r",
+									"    pm.expect(responsePost).have.property('updatedAt');\r",
+									"    pm.expect(responsePost).have.property('createdAt');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Respnse time is optimal\", function() {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(400); // Ensure response time is less than 200ms\r",
+									"}) "
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"title\", pm.iterationData.get('title'));\r",
+									"pm.collectionVariables.set(\"content\", pm.iterationData.get('content'));\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"We are born equall\",\r\n    \"content\": \"We are born equal, but it’s the choices we make that shape who we become.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}post/",
+							"host": [
+								"{{base_url}}post"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "addPost",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{authToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Great things takes time\",\r\n    \"content\": \"Be patient with the process—great things take time.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}post/",
+									"host": [
+										"{{base_url}}post"
+									],
+									"path": [
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "296"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"128-y3lbXLDUEdXOigkT1/RAwoWA7go\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Aug 2025 09:45:55 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Post created successfully\",\n    \"post\": {\n        \"id\": 5,\n        \"title\": \"Great things takes time\",\n        \"content\": \"Be patient with the process—great things take time.\",\n        \"slug\": \"great-things-takes-time\",\n        \"status\": \"draft\",\n        \"authorId\": 1,\n        \"updatedAt\": \"2025-08-18T09:45:55.898Z\",\n        \"createdAt\": \"2025-08-18T09:45:55.898Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseBody = pm.response.json();\r",
+									"const jsonSchema = {\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"message\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"result\": {\r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"id\": {\r",
+									"          \"type\": \"integer\"\r",
+									"        },\r",
+									"        \"title\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"content\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"slug\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"authorId\": {\r",
+									"          \"type\": \"integer\"\r",
+									"        },\r",
+									"        \"status\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"createdAt\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"updatedAt\": {\r",
+									"          \"type\": \"string\"\r",
+									"        }\r",
+									"      },\r",
+									"      \"required\": [\r",
+									"        \"id\",\r",
+									"        \"title\",\r",
+									"        \"content\",\r",
+									"        \"slug\",\r",
+									"        \"authorId\",\r",
+									"        \"status\",\r",
+									"        \"createdAt\",\r",
+									"        \"updatedAt\"\r",
+									"      ]\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"message\",\r",
+									"    \"result\"\r",
+									"  ]\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains the correct message\", function () {\r",
+									"    pm.expect(responseBody.message).to.eql(\"Post updated successfully\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains the correct schema\", function () {\r",
+									"    pm.response.to.have.jsonSchema(jsonSchema);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less then 300 ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"We are born equal\"\r\n    // \"content\": \"Rome wasn’t built in a day—progress may be slow, but every step counts\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}post/{{postId}}",
+							"host": [
+								"{{base_url}}post"
+							],
+							"path": [
+								"{{postId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update Post",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{authToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Rome was not built in a day\",\r\n    \"content\": \"Not everything that looks attractive or valuable on the outside is truly valuable inside.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}post/{{postId}}",
+									"host": [
+										"{{base_url}}post"
+									],
+									"path": [
+										"{{postId}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "342"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"156-rdzJ4hUFaTb+Ht3FjEUYhyRLjVc\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Aug 2025 10:37:16 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Post updated successfully\",\n    \"result\": {\n        \"id\": 6,\n        \"title\": \"Rome was not built in a day\",\n        \"content\": \"Not everything that looks attractive or valuable on the outside is truly valuable inside.\",\n        \"slug\": \"rome-was-not-built-in-a-day\",\n        \"authorId\": 1,\n        \"status\": \"draft\",\n        \"createdAt\": \"2025-08-18T09:50:31.847Z\",\n        \"updatedAt\": \"2025-08-18T10:37:16.886Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "deletePost",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Post deleted successfully\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.expect(pm.response.text()).to.include(\"Post deleted successfully\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 700ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(700);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains correct message\", function () {\r",
+									"    pm.expect(jsonData.message).to.eql(\"Post deleted successfully\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}post/{{postId}}",
+							"host": [
+								"{{base_url}}post"
+							],
+							"path": [
+								"{{postId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "deletePost",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{authToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}post/{{bookId}}",
+									"host": [
+										"{{base_url}}post"
+									],
+									"path": [
+										"{{bookId}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "39"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"27-ApdGuEKF5DvnjukxrpHUpaQnnd8\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Aug 2025 09:41:34 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Post deleted successfully\"\n}"
+						}
+					]
+				},
+				{
+					"name": "getPost",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									" const jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 700ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(700);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains the correct post data\", function () {\r",
+									"    pm.expect(jsonData.message).to.eql(\"Post retrieved successfully\");\r",
+									"    pm.expect(jsonData.post).to.have.property('id');\r",
+									"    pm.expect(jsonData.post).to.have.property('title');\r",
+									"    pm.expect(jsonData.post).to.have.property('content');\r",
+									"    pm.expect(jsonData.post).to.have.property('slug');\r",
+									"    pm.expect(jsonData.post).to.have.property('authorId');\r",
+									"    pm.expect(jsonData.post).to.have.property('status');\r",
+									"    pm.expect(jsonData.post).to.have.property('createdAt');\r",
+									"    pm.expect(jsonData.post).to.have.property('updatedAt');\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}post/{{postId}}",
+							"host": [
+								"{{base_url}}post"
+							],
+							"path": [
+								"{{postId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getPost",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{authToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}post/{{postId}}",
+									"host": [
+										"{{base_url}}post"
+									],
+									"path": [
+										"{{postId}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "344"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"158-s7vhd1FVTbavw/FUxBxcnPbun7Q\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Aug 2025 09:51:05 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Post retrieved successfully\",\n    \"post\": {\n        \"id\": 6,\n        \"title\": \"Rome was not built in a day\",\n        \"content\": \"Remember, Rome was not built in a day—great achievements require patience and persistence\",\n        \"slug\": \"rome-was-not-built-in-a-day\",\n        \"authorId\": 1,\n        \"status\": \"draft\",\n        \"createdAt\": \"2025-08-18T09:50:31.847Z\",\n        \"updatedAt\": \"2025-08-18T09:50:31.847Z\"\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "AddComment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const JSONData = pm.response.json();\r",
+									"const commentId = JSONData.comment.id;\r",
+									"pm.collectionVariables.set(\"commentId\", commentId);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"This is another very funny post\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}post/{{postId}}/comment",
+							"host": [
+								"{{base_url}}post"
+							],
+							"path": [
+								"{{postId}}",
+								"comment"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getComment",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{authToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"content\": \"This is a very funny post\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}post/{{postId}}/comment",
+									"host": [
+										"{{base_url}}post"
+									],
+									"path": [
+										"{{postId}}",
+										"comment"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "236"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"ec-ot7obNx7VTwBLGbNWG0FEOSqN10\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Aug 2025 11:50:49 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": \"Comment created successfully\",\n    \"comment\": {\n        \"isApproved\": false,\n        \"isDeleted\": false,\n        \"id\": 2,\n        \"content\": \"This is a very funny post\",\n        \"postId\": 7,\n        \"userId\": 1,\n        \"updatedAt\": \"2025-08-18T11:50:49.124Z\",\n        \"createdAt\": \"2025-08-18T11:50:49.124Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "GetComment",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}post/{{postId}}/comment/{{commentId}}",
+							"host": [
+								"{{base_url}}post"
+							],
+							"path": [
+								"{{postId}}",
+								"comment",
+								"{{commentId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "GetComment",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{authToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}post/{{postId}}/comment/{{commentId}}",
+									"host": [
+										"{{base_url}}post"
+									],
+									"path": [
+										"{{postId}}",
+										"comment",
+										"{{commentId}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "245"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"f5-Bxx/ICkKnTXvWp4b/81kWILkIto\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Aug 2025 12:24:20 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"comments retrieved successfully\",\n    \"comment\": {\n        \"id\": 5,\n        \"postId\": 7,\n        \"userId\": 1,\n        \"content\": \"This is another very funny post\",\n        \"isApproved\": false,\n        \"isDeleted\": false,\n        \"createdAt\": \"2025-08-18T12:23:59.200Z\",\n        \"updatedAt\": \"2025-08-18T12:23:59.200Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "UpdateComment",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}post/{{postId}}/comment/{{commentId}}",
+							"host": [
+								"{{base_url}}post"
+							],
+							"path": [
+								"{{postId}}",
+								"comment",
+								"{{commentId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "New Request",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{authToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"content\": \"I just want to change this comment\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}post/{{postId}}/comment/{{commentId}}",
+									"host": [
+										"{{base_url}}post"
+									],
+									"path": [
+										"{{postId}}",
+										"comment",
+										"{{commentId}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "244"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"f4-0v21cGNT8IEft0UmYPYzCNf6dkM\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Aug 2025 13:19:16 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Comment updated successfully\",\n    \"result\": {\n        \"id\": 5,\n        \"postId\": 7,\n        \"userId\": 1,\n        \"content\": \"I just want to change this comment\",\n        \"isApproved\": false,\n        \"isDeleted\": false,\n        \"createdAt\": \"2025-08-18T12:23:59.200Z\",\n        \"updatedAt\": \"2025-08-18T13:07:21.030Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "DeleteComment",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}post/{{postId}}/comment/{{commentId}}",
+							"host": [
+								"{{base_url}}post"
+							],
+							"path": [
+								"{{postId}}",
+								"comment",
+								"{{commentId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "New Request",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{authToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}post/{{postId}}/comment/{{commentId}}",
+									"host": [
+										"{{base_url}}post"
+									],
+									"path": [
+										"{{postId}}",
+										"comment",
+										"{{commentId}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "39"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"27-ApdGuEKF5DvnjukxrpHUpaQnnd8\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Aug 2025 13:30:03 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Post deleted successfully\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"message\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"data\": {\r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"user\": {\r",
+									"          \"type\": \"object\",\r",
+									"          \"properties\": {\r",
+									"            \"id\": {\r",
+									"              \"type\": \"integer\"\r",
+									"            },\r",
+									"            \"firstName\": {\r",
+									"              \"type\": \"string\"\r",
+									"            },\r",
+									"            \"lastName\": {\r",
+									"              \"type\": \"string\"\r",
+									"            },\r",
+									"            \"email\": {\r",
+									"              \"type\": \"string\"\r",
+									"            },\r",
+									"            \"isVerified\": {\r",
+									"              \"type\": \"boolean\"\r",
+									"            },\r",
+									"            \"createdAt\": {\r",
+									"              \"type\": \"string\"\r",
+									"            },\r",
+									"            \"updatedAt\": {\r",
+									"              \"type\": \"string\"\r",
+									"            }\r",
+									"          },\r",
+									"          \"required\": [\r",
+									"            \"id\",\r",
+									"            \"firstName\",\r",
+									"            \"lastName\",\r",
+									"            \"email\",\r",
+									"            \"isVerified\",\r",
+									"            \"createdAt\",\r",
+									"            \"updatedAt\"\r",
+									"          ]\r",
+									"        },\r",
+									"        \"accessToken\": {\r",
+									"          \"type\": \"string\"\r",
+									"        }\r",
+									"      },\r",
+									"      \"required\": [\r",
+									"        \"user\",\r",
+									"        \"accessToken\"\r",
+									"      ]\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"message\",\r",
+									"    \"data\"\r",
+									"  ]\r",
+									"}\r",
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains user data\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data.user).to.have.property(\"id\");\r",
+									"    pm.expect(jsonData.data.user).to.have.property(\"firstName\");\r",
+									"    pm.expect(jsonData.data.user).to.have.property(\"lastName\");\r",
+									"    pm.expect(jsonData.data.user).to.have.property(\"email\");\r",
+									"    pm.expect(jsonData.data.user).to.have.property(\"isVerified\");\r",
+									"    pm.expect(jsonData.data.user).to.have.property(\"createdAt\");\r",
+									"    pm.expect(jsonData.data.user).to.have.property(\"updatedAt\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains access token\", function () {\r",
+									"    pm.expect(jsonData.data.accessToken).to.not.be.undefined;\r",
+									"});\r",
+									"\r",
+									"//set the authToken collection variable to the access token received from the response\r",
+									"pm.test(\"Set authToken collection variable\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.collectionVariables.set(\"authToken\", jsonData.data.accessToken);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body matches schema\", function () {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"kosara@gmail.com\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}auth/login",
+							"host": [
+								"{{base_url}}auth"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"kosara@gmail.com\",\r\n    \"password\": \"{{password}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}auth/login",
+									"host": [
+										"{{base_url}}auth"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "598"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"256-8BDkJEooeLx00/sevukM5A69p/I\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Aug 2025 09:37:33 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Logged in successful\",\n    \"data\": {\n        \"user\": {\n            \"id\": 1,\n            \"firstName\": \"Nwafor\",\n            \"lastName\": \"Kosara\",\n            \"email\": \"kosara@gmail.com\",\n            \"isVerified\": false,\n            \"createdAt\": \"2025-08-16T14:32:35.252Z\",\n            \"updatedAt\": \"2025-08-16T14:32:35.252Z\"\n        },\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3ROYW1lIjoiTndhZm9yIiwibGFzdE5hbWUiOiJLb3NhcmEiLCJlbWFpbCI6Imtvc2FyYUBnbWFpbC5jb20iLCJpc1ZlcmlmaWVkIjpmYWxzZSwiY3JlYXRlZEF0IjoiMjAyNS0wOC0xNlQxNDozMjozNS4yNTJaIiwidXBkYXRlZEF0IjoiMjAyNS0wOC0xNlQxNDozMjozNS4yNTJaIiwiaWF0IjoxNzU1NTA5ODUzLCJleHAiOjE3NTU1NDU4NTN9.ZStVUDjoVTosMA65TMP4YCmYrK_onJI9Bb-KUydkpB8\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "registerUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Chijiuba\",\r\n    \"lastName\": \"Victory\",\r\n    \"email\": \"chijiuba@gmail.com\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}auth/register",
+							"host": [
+								"{{base_url}}auth"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "registerUser",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\": \"Chijiuba\",\r\n    \"lastName\": \"Victory\",\r\n    \"email\": \"chijiuba@gmail.com\",\r\n    \"password\": \"{{password}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}auth/register",
+									"host": [
+										"{{base_url}}auth"
+									],
+									"path": [
+										"register"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1252"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4e4-NW71uzosShNb0yAhdUgj/6g78E8\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Aug 2025 09:38:32 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"User created successfully\",\n    \"data\": {\n        \"user\": {\n            \"id\": 2,\n            \"email\": \"chijiuba@gmail.com\",\n            \"firstName\": \"Chijiuba\",\n            \"lastName\": \"Victory\",\n            \"isVerified\": false,\n            \"updatedAt\": \"2025-08-18T09:38:32.340Z\",\n            \"createdAt\": \"2025-08-18T09:38:32.340Z\"\n        },\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhVmFsdWVzIjp7ImlkIjoyLCJlbWFpbCI6ImNoaWppdWJhQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJDV5V2piRVdVeEJqLzFYc3ZlMkNmWHVQaWJSVEs3M2E3YWp2NzRxSUNFL09YQkRNenJ3MXZLIiwiZmlyc3ROYW1lIjoiQ2hpaml1YmEiLCJsYXN0TmFtZSI6IlZpY3RvcnkiLCJpc1ZlcmlmaWVkIjpmYWxzZSwidXBkYXRlZEF0IjoiMjAyNS0wOC0xOFQwOTozODozMi4zNDBaIiwiY3JlYXRlZEF0IjoiMjAyNS0wOC0xOFQwOTozODozMi4zNDBaIn0sIl9wcmV2aW91c0RhdGFWYWx1ZXMiOnsiZW1haWwiOiJjaGlqaXViYUBnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCQ1eVdqYkVXVXhCai8xWHN2ZTJDZlh1UGliUlRLNzNhN2Fqdjc0cUlDRS9PWEJETXpydzF2SyIsImZpcnN0TmFtZSI6IkNoaWppdWJhIiwibGFzdE5hbWUiOiJWaWN0b3J5IiwiaXNWZXJpZmllZCI6ZmFsc2UsImlkIjoyLCJjcmVhdGVkQXQiOiIyMDI1LTA4LTE4VDA5OjM4OjMyLjM0MFoiLCJ1cGRhdGVkQXQiOiIyMDI1LTA4LTE4VDA5OjM4OjMyLjM0MFoifSwidW5pcW5vIjoxLCJfY2hhbmdlZCI6e30sIl9vcHRpb25zIjp7ImlzTmV3UmVjb3JkIjp0cnVlLCJfc2NoZW1hIjpudWxsLCJfc2NoZW1hRGVsaW1pdGVyIjoiIn0sImlzTmV3UmVjb3JkIjpmYWxzZSwiaWF0IjoxNzU1NTA5OTEyLCJleHAiOjE3NTU1NDU5MTJ9.FFkb9ctwJS6EkoGIFvg4y1eBQxcHsojailnPfO6bBRk\"\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "index",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const JsonData = pm.response.json(); // Get the response data as JSON\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contain the message property\", function () {\r",
+							"    pm.expect(JsonData).to.have.property('message');\r",
+							"    pm.expect(JsonData.message).to.be.a('string');\r",
+							"    pm.expect(JsonData.message).to.not.be.empty;\r",
+							"    pm.expect(JsonData.message).to.equal('Welcome to my Content Management System API');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contain the data property\", function () {\r",
+							"    pm.expect(JsonData).to.have.property('data');\r",
+							"    pm.expect(JsonData.data).to.be.an('object');\r",
+							"    pm.expect(JsonData.data).to.have.property('environment');\r",
+							"    pm.expect(JsonData.data).to.have.property('version');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Respnse time is optimal\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(400); // Check if response time is less than 2000ms\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.log(pm.globals.get(\"companyCode\"));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "index",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "112"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"70-kngzC4DSfm1os8fPq0i0tQuGau0\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 18 Aug 2025 09:39:33 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Welcome to my Content Management System API\",\n    \"data\": {\n        \"environment\": \"development\",\n        \"version\": \"1.0.0\"\n    }\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "password",
+			"value": "chijiuba123",
+			"type": "string"
+		},
+		{
+			"key": "authToken",
+			"value": "{{vault:json-web-token}}",
+			"type": "string"
+		},
+		{
+			"key": "postId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "title",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "content",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "bookId",
+			"value": ""
+		},
+		{
+			"key": "commentId",
+			"value": ""
+		}
+	]
+}

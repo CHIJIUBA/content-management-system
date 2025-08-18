@@ -65,7 +65,7 @@ class CommentService {
     if (!comment) {
       throw new NotFoundError(`user comment with id: ${id} not found`);
     }
-    await Comment.destroy();
+    await Comment.destroy({ where: { id, userId, postId } });
     return true;
   }
 }

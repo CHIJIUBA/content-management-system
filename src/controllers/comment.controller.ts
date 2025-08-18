@@ -25,7 +25,7 @@ class CommentController {
         res.status(400).json({ message: 'an error occured was not able to create comment' });
       }
     } catch (error) {
-      console.error(`Error retrieving comment: ${error}`);
+      console.error(`Error adding comment: ${error}`);
       res.status(500).json({ error: 'Internal server error' });
     }
   }
@@ -103,7 +103,7 @@ class CommentController {
         message: 'Post deleted successfully'
       });
     } catch (error) {
-      console.error(`Error deleting post: ${error}`);
+      console.error(`Error deleting comment: ${error}`);
       res.status(404).json({ error: 'Unable to delete post' });
     }
   }
