@@ -17,7 +17,7 @@ class CommentService {
   public async updateComment(data: Partial<Comment>): Promise<Comment> {
     const { id, userId, postId, content } = data;
     const comment = await this.getUserComment(data);
-    if (comment) {
+    if (!comment) {
       throw new NotFoundError(`user comment with id: ${id} not found`);
     }
     // Update the post with provided data
