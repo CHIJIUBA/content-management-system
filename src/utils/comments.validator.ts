@@ -6,9 +6,7 @@ import BaseValidator from '.';
 class CommentValidatorUtil extends BaseValidator {
   public addComment = (req: Request): ValidationResult => {
     const schema = Joi.object().keys({
-      title: Joi.string().min(3).required().label('Title'),
-      content: Joi.string().min(10).required().label('Content'),
-      status: Joi.string().valid('draft', 'published').default('draft').label('Status')
+      content: Joi.string().min(10).required().label('Content')
     });
     return this.validate(schema, req.body);
   };
