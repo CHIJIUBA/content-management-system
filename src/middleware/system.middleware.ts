@@ -4,6 +4,7 @@ import SystemError from '../errors/system.error';
 import { RequestValidator } from '../interface/functions.interface';
 import rateLimit from 'express-rate-limit';
 import Joi from 'joi';
+import ValidationError from '../errors/validation.error';
 
 class SystemMiddleware {
   public errorHandler(): ErrorRequestHandler {
@@ -54,7 +55,7 @@ class SystemMiddleware {
   public validateRequestBody(validator: RequestValidator) {
     return (req: Request, res: Response, next: NextFunction) => {
       const { error, value } = validator(req);
-      if (error) throw error;
+      if (error) throw new ValidationError('Invalid request body: ' + error.message);
       req.body = value;
 
       next();
