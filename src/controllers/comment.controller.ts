@@ -18,12 +18,14 @@ class CommentController {
         postId: req.params.postId ? parseInt(req.params.postId) : null,
         userId: req.user.id
       };
-      const comment = await commentService.createComment(commentData);
-      if (comment) {
-        res.status(201).json({ success: 'Comment created successfully' });
-      } else {
-        res.status(400).json({ message: 'an error occured was not able to create comment' });
-      }
+      res.status(200).json({
+        commentData
+      }); // const comment = await commentService.createComment(commentData);
+      // if (comment) {
+      //   res.status(201).json({ success: 'Comment created successfully' });
+      // } else {
+      //   res.status(400).json({ message: 'an error occured was not able to create comment' });
+      // }
     } catch (error) {
       console.error(`Error retrieving comment: ${error}`);
       res.status(500).json({ error: 'Internal server error' });
