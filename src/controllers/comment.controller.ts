@@ -87,10 +87,15 @@ class CommentController {
    * @param res - Express response object
    */
   public async deletePost(req: Request, res: Response) {
-    const { id } = req.params;
+    const { commentId, postId } = req.params;
+    const commentData: Partial<Comment> = {
+      id: parseInt(commentId),
+      userId: req.user.id,
+      postId: parseInt(postId)
+    };
     try {
-      const post = await postsService.deletePost(parseInt(id), req.user.id);
-      if (!post) {
+      const comment = await commentService.deleteComment(commentData);
+      if (!comment) {
         res.status(404).json({ error: 'Unable to delete post' });
       }
       // If the post was successfully deleted, send a success response
@@ -100,30 +105,6 @@ class CommentController {
     } catch (error) {
       console.error(`Error deleting post: ${error}`);
       res.status(404).json({ error: 'Unable to delete post' });
-    }
-  }
-
-  /**
-   * A simple sum function for testing purposes
-   * @param a - First number
-   * @param b - Second number
-   */
-  public async sayHello(req: Request, res: Response) {
-    try {
-      res.status(200).json({
-        message: 'Hello comment'
-      });
-    } catch (error) {
-      console.error(`Error deleting post: ${error}`);
-      res.status(404).json({ error: 'Unable to delete post' });
-    }
-  }
-
-  public async viewMe() {
-    try {
-      return 'Hello';
-    } catch (error) {
-      console.error(`Error deleting post: ${error}`);
     }
   }
 }
