@@ -21,9 +21,9 @@ class CommentService {
       throw new NotFoundError(`user comment with id: ${id} not found`);
     }
     // Update the post with provided data
-    // comment.content = content || comment.content;
-    // await comment.save();
-    // return comment;
+    comment.content = content || comment.content;
+    await comment.save();
+    return comment;
   }
 
   public async getComment(id: number): Promise<Comment> {

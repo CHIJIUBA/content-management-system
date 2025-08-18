@@ -67,7 +67,7 @@ class CommentController {
       content
     };
     try {
-      const result = await commentService.updatePost(commentData);
+      const result = await commentService.updateComment(commentData);
       if (!result) {
         res.status(404).json({ error: 'Comment not found or not authorized to update' });
       }
