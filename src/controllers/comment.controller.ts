@@ -18,9 +18,6 @@ class CommentController {
         postId: req.params.postId ? parseInt(req.params.postId) : null,
         userId: req.user.id
       };
-      // res.status(200).json({
-      //   commentData
-      // });
       const comment = await commentService.createComment(commentData);
       if (comment) {
         res.status(201).json({ success: 'Comment created successfully', comment });
@@ -45,11 +42,6 @@ class CommentController {
         userId: req.user.id,
         postId: parseInt(postId)
       };
-      // res.status(200).json({
-      //   message: 'Comment retrieved successfully',
-      //   commentData
-      // });
-
       const comment = await commentService.getUserComment(commentData);
       res.status(200).json({
         message: 'comments retrieved successfully',
@@ -58,27 +50,6 @@ class CommentController {
     } catch (error) {
       console.error(`Error retrieving comments: ${error}`);
       res.status(500).json({ error: 'Internal server error' });
-    }
-  }
-  /**
-   * Get a single post by ID
-   * @param req - Express request object
-   * @param res - Express response object
-   */
-  public async getPost(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
-    try {
-      const post = await postsService.getUserPost(parseInt(id), req.user.id);
-      if (!post) {
-        res.status(404).json({ error: 'No post with this user id found' });
-      }
-      res.status(200).json({
-        message: 'Post retrieved successfully',
-        post
-      });
-    } catch (error) {
-      console.error(`Error retrieving post: ${error}`);
-      res.status(404).json({ error: 'No post with this user id found' });
     }
   }
   /**
@@ -96,18 +67,15 @@ class CommentController {
       content
     };
     try {
-      //   const result = await commentService.updatePost(commentData);
-      //   if (!result) {
-      //     res.status(404).json({ error: 'Comment not found or not authorized to update' });
-      //   }
-      res.status(200).json({
-        commentData
-      });
+      const result = await commentService.updatePost(commentData);
+      if (!result) {
+        res.status(404).json({ error: 'Comment not found or not authorized to update' });
+      }
 
-      //   res.status(200).json({
-      //     message: 'Comment updated successfully',
-      //     result
-      //   });
+      res.status(200).json({
+        message: 'Comment updated successfully',
+        result
+      });
     } catch (error) {
       console.error(`Error updating comment: ${error}`);
       res.status(404).json({ error: 'Comment not found or not authorized to update' });

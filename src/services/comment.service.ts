@@ -14,16 +14,16 @@ class CommentService {
     return comment;
   }
 
-  public async updatePost(data: Partial<Comment>): Promise<Comment> {
+  public async updateComment(data: Partial<Comment>): Promise<Comment> {
     const { id, userId, postId, content } = data;
     const comment = await this.getUserComment(data);
     if (comment) {
       throw new NotFoundError(`user comment with id: ${id} not found`);
     }
     // Update the post with provided data
-    comment.content = content || comment.content;
-    await comment.save();
-    return comment;
+    // comment.content = content || comment.content;
+    // await comment.save();
+    // return comment;
   }
 
   public async getComment(id: number): Promise<Comment> {
