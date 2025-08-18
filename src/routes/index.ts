@@ -32,7 +32,7 @@ class Routes {
     // Middleware to validate user access for all routes after this point
     this.router.use(authMiddleware.validateUserAccess);
     this.router.use('/post', postRoutes);
-    this.router.use('/comment', commentRoute);
+    this.router.use('/post/:postId', commentRoute);
   }
 }
 
