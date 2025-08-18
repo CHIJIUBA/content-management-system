@@ -15,7 +15,7 @@ class CommentController {
     try {
       const commentData: Partial<Comment> = {
         content: req.body.content,
-        postId: req.body.postId,
+        postId: req.params.postId ? parseInt(req.params.postId) : null,
         userId: req.user.id
       };
       const comment = await commentService.createComment(commentData);
