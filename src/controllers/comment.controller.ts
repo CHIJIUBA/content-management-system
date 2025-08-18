@@ -39,16 +39,16 @@ class CommentController {
    */
   public async getComment(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id, postId } = req.params;
+      const { commentId, postId } = req.params;
       const commentData: Partial<Comment> = {
-        id: parseInt(id),
+        id: parseInt(commentId),
         userId: req.user.id,
         postId: parseInt(postId)
       };
-      //   res.status(200).json({
-      //     message: 'Comment retrieved successfully',
-      //     commentData
-      //   });
+      // res.status(200).json({
+      //   message: 'Comment retrieved successfully',
+      //   commentData
+      // });
 
       const comment = await commentService.getUserComment(commentData);
       res.status(200).json({
@@ -87,10 +87,10 @@ class CommentController {
    * @param res - Express response object
    */
   public async updateComment(req: Request, res: Response) {
-    const { id, postId } = req.params;
+    const { commentId, postId } = req.params;
     const { content } = req.body;
     const commentData: Partial<Comment> = {
-      id: parseInt(id),
+      id: parseInt(commentId),
       userId: req.user.id,
       postId: parseInt(postId),
       content
@@ -100,7 +100,9 @@ class CommentController {
       //   if (!result) {
       //     res.status(404).json({ error: 'Comment not found or not authorized to update' });
       //   }
-      res.status(200).json({});
+      res.status(200).json({
+        commentData
+      });
 
       //   res.status(200).json({
       //     message: 'Comment updated successfully',

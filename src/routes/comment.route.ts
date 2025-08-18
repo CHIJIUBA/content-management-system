@@ -11,7 +11,16 @@ commentRoute.post(
   systemMiddleware.formatRequestParamId('postId'),
   commentController.addComment
 );
-commentRoute.get('/:id/:postId', commentController.getComment);
-commentRoute.patch('/:id/:postId', commentController.updateComment);
+commentRoute.get(
+  '/:postId/comment/:commentId',
+  systemMiddleware.formatRequestParamId('postId'),
+  systemMiddleware.formatRequestParamId('commentId'),
+  commentController.getComment
+);
+commentRoute.patch(
+  '/:postId/comment/:commentId',
+  systemMiddleware.validateRequestBody(commentsValidator.updateComment),
+  commentController.updateComment
+);
 
 export default commentRoute;

@@ -13,9 +13,7 @@ class CommentValidatorUtil extends BaseValidator {
 
   public updateComment = (req: Request): ValidationResult => {
     const schema = Joi.object().keys({
-      title: Joi.string().min(3).label('Title'),
-      content: Joi.string().min(10).label('Content'),
-      status: Joi.string().valid('draft', 'published').default('draft').label('Status')
+      content: Joi.string().required().min(10).label('Content')
     });
     return this.validate(schema, req.body);
   };
