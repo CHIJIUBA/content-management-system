@@ -1,11 +1,15 @@
 import express from 'express';
 import systemMiddleware from '../middleware/system.middleware';
 import commentController from '../controllers/comment.controller';
-import postsValidator from '../utils/posts.validator';
+import commentsValidator from '../utils/comments.validator';
 
 const commentRoute = express.Router();
 
-commentRoute.post('/', commentController.addComment);
+commentRoute.post(
+  '/',
+  systemMiddleware.validateRequestBody(commentsValidator.addComment),
+  commentController.addComment
+);
 commentRoute.get('/:id/:postId', commentController.getComment);
 commentRoute.patch('/:id/:postId', commentController.updateComment);
 
