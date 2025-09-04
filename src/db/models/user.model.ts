@@ -19,6 +19,7 @@ class User
   declare email: string;
   declare password: string;
   // declare role: CreationOptional<string>;
+  // this is something I came up with
   declare isVerified: CreationOptional<boolean>;
 
   public async comparePassword(password: string): Promise<boolean> {
