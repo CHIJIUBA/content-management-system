@@ -39,6 +39,7 @@ class DB {
         // await this.sequelize.sync({});
         // await this.sequelize.sync({ alter: true });
         // await this.sequelize.sync({ force: true });
+        // just adding this here to check something out.
       }
 
       console.log('Connected to the database');
