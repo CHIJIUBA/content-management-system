@@ -1,37 +1,45 @@
-import { Options, Sequelize } from 'sequelize';
+import { Sequelize } from 'sequelize';
 import { init as initModels } from './models';
-import path from 'path';
+import { serverConfigs } from '../configs';
 
 class DB {
   public sequelize: Sequelize;
-  public options: Options;
 
   constructor() {
-    this.options = {
-      dialect: 'sqlite',
-      storage: path.join(process.cwd(), 'database.sqlite'), // Root directory
-      // logging: process.env.NODE_ENV === 'development' ? console.log : false
-      logging: false // Disable logging for production
-    };
+    // Use the DATABASE_URL from environment variables
+    const dbUrl = process.env.DATABASE_URL;
+
+    if (!dbUrl) {
+      throw new Error('DATABASE_URL environment variable is not set');
+    }
+
+    // Initialize Sequelize with MySQL connection string
+    this.sequelize = new Sequelize(dbUrl, {
+      dialect: 'mysql',
+      logging: serverConfigs.NODE_ENV === 'development' ? console.log : false
+    });
   }
 
   public async connectDB() {
     try {
-      this.sequelize = new Sequelize(this.options);
       initModels(this.sequelize);
 
-      console.log('Connecting to SQLite database...');
+      console.log('Connecting to the database...');
 
-      if (process.env.NODE_ENV === 'development') {
-        // await this.sequelize.sync(); // Or { alter: true } / { force: true }
-        // this.seqelize.sync({ alter: true });
-        // this.sequelize.sync({ force: true });
+      await this.sequelize.authenticate();
+
+      if (serverConfigs.NODE_ENV === 'development') {
+        // Uncomment what you need
+        // await this.sequelize.sync({});
+        // await this.sequelize.sync({ alter: true });
+        // await this.sequelize.sync({ force: true });
       }
 
-      console.log('Connected to SQLite database');
+      console.log('Connected to the database');
       return this.sequelize;
     } catch (error) {
-      console.log(`Error connecting to the database: ${error}`);
+      console.error(`Error connecting to the database: ${error}`);
+      throw error;
     }
   }
 
@@ -40,7 +48,7 @@ class DB {
       await this.sequelize.close();
       console.log('Database connection closed');
     } catch (error) {
-      console.log(`Error closing the database: ${error}`);
+      console.error(`Error closing the database: ${error}`);
     }
   }
 }
