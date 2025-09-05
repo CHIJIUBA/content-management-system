@@ -30,7 +30,7 @@ class DB {
 
       if (serverConfigs.NODE_ENV === 'development') {
         // Uncomment what you need
-        // await this.sequelize.sync({});
+        await this.sequelize.sync({});
         // await this.sequelize.sync({ alter: true });
         // await this.sequelize.sync({ force: true });
       }
