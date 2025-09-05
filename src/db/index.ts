@@ -7,7 +7,7 @@ class DB {
 
   constructor() {
     // Use the DATABASE_URL from environment variables
-    const dbUrl = process.env.DATABASE_URL;
+    const dbUrl = serverConfigs.DB_URL;
 
     if (!dbUrl) {
       throw new Error('DATABASE_URL environment variable is not set');
@@ -16,7 +16,13 @@ class DB {
     // Initialize Sequelize with MySQL connection string
     this.sequelize = new Sequelize(dbUrl, {
       dialect: 'mysql',
-      logging: serverConfigs.NODE_ENV === 'development' ? console.log : false
+      logging: serverConfigs.NODE_ENV === 'development' ? console.log : false,
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false // allow self-signed certs
+        }
+      }
     });
   }
 
